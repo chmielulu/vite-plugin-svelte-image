@@ -163,7 +163,10 @@ const transformToConstrained = async (
   if (params.height && params.height < metadata.height) {
     height = params.height;
   } else {
-    height = metadata.height;
+    height =
+      width < metadata.width
+        ? Math.round(metadata.height * (width / metadata.width))
+        : metadata.height;
   }
 
   let imageObj: TransformedImage = {
@@ -211,7 +214,9 @@ const transformToConstrained = async (
     },
   };
 
-  const imageSizes = [0, 0, 0, 0].map((_, i) => (width / 4) * (i + 1));
+  const imageSizes = [0, 0, 0, 0].map((_, i) =>
+    Math.round((width / 4) * (i + 1))
+  );
 
   let fallback = {
     source: transformFallback(image, metadata, params, width),

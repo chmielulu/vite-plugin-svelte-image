@@ -31,8 +31,8 @@
   });
 </script>
 
-<div bind:this={container} class="{$$props.class ? $$props.class + ' ' : ''}svelte-image-wrapper">
-  <div class="empty-div"></div>
+<div style="max-width: {image.width}px" bind:this={container} class="{$$props.class ? $$props.class + ' ' : ''}svelte-image-wrapper">
+  <div style="padding-bottom: {image.height / image.width * 100}%"></div>
   {#if typeof image?.placeholder?.fallback === "string"}
     <img bind:this={placeholder} src={image.placeholder.fallback} class="placeholder" alt="" aria-hidden="true" decoding="async">
   {:else}
@@ -62,7 +62,7 @@
   }
 
   .empty-div {
-    padding-top: 66.66666666666666%;
+
   }
 
   .placeholder {
@@ -80,6 +80,7 @@
     right: 0;
     top: 0;
     width: 100%;
+    object-fit: cover;
   }
 
   picture img {
