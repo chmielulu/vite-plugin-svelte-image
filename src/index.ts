@@ -26,8 +26,8 @@ import * as crypto from "crypto";
 import { trace } from "potrace";
 import * as util from "util";
 
-export default function VitePluginSvelteImages(args?: PluginArgs): Plugin {
-  const generatedImages = new ImagesCache();
+export default function VitePluginSvelteImages(args: PluginArgs = {}): Plugin {
+  const generatedImages = new ImagesCache(args);
 
   return {
     name: "svelte-image",
@@ -192,7 +192,7 @@ const transformToConstrained = async (
     const placeholderBuffer = await image
       .clone()
       .resize(400)
-      .jpeg({ quality: 50 })
+      [metadata.format]({ quality: 50 })
       .toBuffer();
     // @ts-ignore
     const svg = (await tracePromise(placeholderBuffer, {
