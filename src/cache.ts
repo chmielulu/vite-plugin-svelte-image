@@ -1,20 +1,18 @@
-import { PluginArgs, SvelteImage } from "./interface";
+import { PluginArgs, SvelteImage } from "./interfaces/interface";
 import * as fs from "fs";
-import path from "path";
 import JSum from "jsum";
+import { PATH_CACHE_DIR, PATH_CACHE_FILE } from "./constants/constants";
 
-const CACHE_PATHNAME = path.join(process.cwd(), ".cache");
-const SVELTE_CACHE_PATHNAME = path.join(CACHE_PATHNAME, "svelte-image");
-export class ImagesCache {
+export class PluginCache {
   private cachedImages: Map<string, SvelteImage>;
   private pluginArgsChecksum: any;
 
   constructor(pluginArgs: PluginArgs) {
     const newChecksum = JSum.digest(pluginArgs, "SHA256", "hex");
 
-    fs.mkdirSync(CACHE_PATHNAME, { recursive: true });
-    if (fs.existsSync(SVELTE_CACHE_PATHNAME)) {
-      const data = JSON.parse(fs.readFileSync(SVELTE_CACHE_PATHNAME, "utf-8"));
+    fs.mkdirSync(PATH_CACHE_DIR, { recursive: true });
+    if (fs.existsSync(PATH_CACHE_FILE)) {
+      const data = JSON.parse(fs.readFileSync(PATH_CACHE_FILE, "utf-8"));
 
       if (data.pluginArgsChecksum !== newChecksum) {
         this.cachedImages = new Map();
@@ -32,7 +30,7 @@ export class ImagesCache {
   async push(id: string, image: SvelteImage) {
     this.cachedImages.set(id, image);
     await fs.promises.writeFile(
-      SVELTE_CACHE_PATHNAME,
+      PATH_CACHE_FILE,
       JSON.stringify({
         cachedImages: Object.fromEntries(this.cachedImages),
         pluginArgsChecksum: this.pluginArgsChecksum,

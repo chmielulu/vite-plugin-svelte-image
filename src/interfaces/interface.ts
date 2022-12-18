@@ -35,14 +35,6 @@ export interface ImageArgs {
   quality?: number;
   outputPixelDensities?: number[];
   breakpoints?: number[];
-  blurredOptions?: {
-    toFormat?: Format;
-    width?: number;
-  };
-  jpgOptions?: FormatOptions;
-  pngOptions?: FormatOptions;
-  webpOptions?: FormatOptions;
-  vifOptions?: FormatOptions;
 }
 
 export interface FilledImageArgs extends ImageArgs {
@@ -55,14 +47,15 @@ export interface FilledImageArgs extends ImageArgs {
   };
   quality: number;
   breakpoints: number[];
+  ignore: boolean;
 }
 
 export interface PluginArgs {
   defaultArgs?: ImageArgs;
   outDir?: string;
   tracedSvg?: {
-    background: string;
-    color: string;
+    background?: string;
+    color?: string;
   };
 }
 

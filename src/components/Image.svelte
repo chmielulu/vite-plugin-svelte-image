@@ -1,10 +1,10 @@
-<script lang="ts">
+<script>
   import { onMount } from "svelte";
 
   export let image;
-  export let alt: string;
+  export let alt
 
-  let placeholder: HTMLElement, img: HTMLImageElement, container: HTMLDivElement;
+  let placeholder, img, container;
 
   onMount(() => {
     const observer = new IntersectionObserver(entries => {
@@ -55,14 +55,10 @@
   </noscript>
 </div>
 
-<style lang="scss">
+<style>
   .svelte-image-wrapper {
     position: relative;
     overflow: hidden;
-  }
-
-  .empty-div {
-
   }
 
   .placeholder {
