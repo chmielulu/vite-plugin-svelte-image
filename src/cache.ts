@@ -1,7 +1,11 @@
 import { PluginArgs, SvelteImage } from "./interfaces/interface";
 import * as fs from "fs";
 import JSum from "jsum";
-import { PATH_CACHE_DIR, PATH_CACHE_FILE } from "./constants/constants";
+import {
+  PATH_CACHE_DIR,
+  PATH_CACHE_DOWNLOAD_FILES_DIR,
+  PATH_CACHE_FILE,
+} from "./constants/constants";
 
 export class PluginCache {
   private cachedImages: Map<string, SvelteImage>;
@@ -11,6 +15,7 @@ export class PluginCache {
     const newChecksum = JSum.digest(pluginArgs, "SHA256", "hex");
 
     fs.mkdirSync(PATH_CACHE_DIR, { recursive: true });
+    fs.mkdirSync(PATH_CACHE_DOWNLOAD_FILES_DIR, { recursive: true });
     if (fs.existsSync(PATH_CACHE_FILE)) {
       const data = JSON.parse(fs.readFileSync(PATH_CACHE_FILE, "utf-8"));
 

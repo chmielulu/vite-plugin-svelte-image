@@ -8,6 +8,7 @@ export function VitePluginSvelteImage(args: PluginArgs = {}): Plugin {
   return {
     name: "svelte-image",
     enforce: "pre",
+    resolveId: plugin.resolveId.bind(plugin),
     load: plugin.generateSvelteImage.bind(plugin),
   };
 }

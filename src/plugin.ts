@@ -2,6 +2,7 @@ import { PluginCache } from "./cache";
 import {
   FilledImageArgs,
   Format,
+  ImageArgs,
   PluginArgs,
   TransformedImage,
   TransformedImageImages,
@@ -23,6 +24,8 @@ import { getDominantColor } from "./utils/getDominantColor";
 import { optimizeSVG } from "./utils/optimizeSvg";
 import { transformFallback } from "./utils/transformFallback";
 import colors from "colors/safe";
+import { PATH_CACHE_DOWNLOAD_FILES_DIR } from "./constants/constants";
+import * as http from "http";
 
 export class PluginSvelteImage {
   private cache: PluginCache;
@@ -33,7 +36,37 @@ export class PluginSvelteImage {
     this.pluginArs = pluginArgs;
   }
 
+  async downloadFile(href: string, type: Format, imageArgs: ImageArgs) {
+    const id = hashID(href);
+    const filePath = path.join(PATH_CACHE_DOWNLOAD_FILES_DIR, `${id}.${type}`);
+    const file = fs.createWriteStream(filePath);
+
+    http.get(href, (res) => {
+      res.pipe(file);
+
+      file.on("finish", () => {
+        file.close();
+        console.log(`Downloaded: ${href}`);
+      });
+    });
+
+    await this.generateSvelteImage(filePath.replace(process.cwd(), ""));
+  }
+
+  async resolveId(id: string) {
+    // if (id.includes("virtual:svelte-image")) {
+    //   return `\0${id}`;
+    // }
+  }
+
   async generateSvelteImage(id: string) {
+    // if (
+    //   id.includes("\0virtual:svelte-image") &&
+    //   this.pluginArs.imagesDownloader
+    // ) {
+    //   const data = await this.pluginArs.imagesDownloader();
+    // }
+
     const info = extractInfoFromId(id);
 
     if (!info) {

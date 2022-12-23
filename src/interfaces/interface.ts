@@ -57,6 +57,7 @@ export interface PluginArgs {
     background?: string;
     color?: string;
   };
+  imagesDownloader?: () => Promise<{ items: { id: string; href: string }[] }>;
 }
 
 export interface TransformedImage {
