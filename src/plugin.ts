@@ -167,7 +167,7 @@ export class PluginSvelteImage {
     } else {
       height =
         width < metadata.width
-          ? Math.round(metadata.height * (width / metadata.width))
+          ? Math.round(metadata.height * (width / metadata.height))
           : metadata.height;
     }
 
@@ -186,7 +186,7 @@ export class PluginSvelteImage {
     } else if (params.placeholder === "blurred") {
       imageObj.placeholder = {
         fallback: `data:image/png;base64,${(
-          await image.clone().resize(20).png().toBuffer()
+          await image.clone().resize(20).withMetadata().png().toBuffer()
         ).toString("base64")}`,
       };
     } else if (params.placeholder === "tracedSvg") {
@@ -194,6 +194,7 @@ export class PluginSvelteImage {
       const placeholderBuffer = await image
         .clone()
         .resize(400)
+        .withMetadata()
         [metadata.format]({ quality: 50 })
         .toBuffer();
       // @ts-ignore
@@ -256,7 +257,8 @@ export class PluginSvelteImage {
               [format]({ quality: params.quality })
               .resize(imageSize, null, {
                 fit: params.transformOptions.fit,
-              }),
+              })
+              .withMetadata(),
             width: imageSize,
           },
         ];

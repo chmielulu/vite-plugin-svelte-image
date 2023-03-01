@@ -1,6 +1,6 @@
 {
   "name": "@rendpro/vite-plugin-svelte-image",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.js",
@@ -21,7 +21,8 @@
     "jsum": "^2.0.0-alpha.4",
     "sharp": "^0.31.2",
     "potrace": "^2.1.8",
-    "colors": "^1.4.0"
+    "colors": "^1.4.0",
+    "camelcase": "^7.0.1"
   },
   "peerDependencies": {
     "svelte": "^3.55.0",
@@ -38,7 +39,6 @@
     "@types/sharp": "^0.31.0",
     "@types/svgo": "^3.0.0",
     "@types/uuid": "^9.0.0",
-    "camelcase": "^7.0.1",
     "prettier": "^2.8.1",
     "remove": "^0.1.5",
     "rollup": "^3.7.4",
